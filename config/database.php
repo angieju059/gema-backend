@@ -1,12 +1,16 @@
 <?php
-$host = "localhost";
-$db   = "gema_db"; 
+$host = "localhost"; 
 $user = "root";
-$pass = "MiSQL2025+"; // Verifica que sea tu clave real
+$password = "MiSQL2025+"; 
+$database = "gema_db";
+$port = 3307; 
 
-$conn = new mysqli($host, $user, $pass, $db);
+$conn = mysqli_init();
+if (!$conn) { die("mysqli_init failed"); }
+
+$conn->real_connect($host, $user, $password, $database, $port);
 
 if ($conn->connect_error) {
-    die(json_encode(["error" => "Error de conexión"]));
+    die("Error de conexión: " . $conn->connect_error);
 }
 ?>

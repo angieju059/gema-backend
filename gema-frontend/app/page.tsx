@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useState } from 'react';
-
+import Link from 'next/link'; 
 export default function GestionActivos() {
   const [usuarios, setUsuarios] = useState([]);
 
-  // 1. Cargar los datos desde tu nuevo api_usuarios.php [cite: 74]
   useEffect(() => {
     fetch('http://localhost/gema-backend/api_usuarios.php')
       .then(res => res.json())
@@ -12,7 +11,6 @@ export default function GestionActivos() {
       .catch(err => console.error("Error cargando datos:", err));
   }, []);
 
-  // Función para crear cada tabla según el estado [cite: 6, 7]
   const renderTabla = (titulo: string, codigo: number) => {
     const filtrados = usuarios.filter((u: any) => parseInt(u.estado) === codigo);
     return (
@@ -24,6 +22,7 @@ export default function GestionActivos() {
               <th className="pb-3 font-medium">Email</th>
               <th className="pb-3 font-medium">Nombre</th>
               <th className="pb-3 font-medium">Apellido</th>
+              <th className="pb-3 font-medium text-blue-600">Revisor</th> 
             </tr>
           </thead>
           <tbody className="text-gray-600">
@@ -32,6 +31,7 @@ export default function GestionActivos() {
                 <td className="py-4 text-blue-600">{u.email}</td>
                 <td className="py-4">{u.nombre || '---'}</td>
                 <td className="py-4">{u.apellido || '---'}</td>
+                <td className="py-4 font-bold text-gray-800">{u.revisor || 'Sin Asignar'}</td>
               </tr>
             ))}
           </tbody>
@@ -45,12 +45,14 @@ export default function GestionActivos() {
       <div className="max-w-5xl mx-auto">
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Gestión de Activos</h1>
-          <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition">
-            Cargar Archivo
-          </button>
+
+          <Link href="/cargar">
+            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition">
+              Cargar Archivo
+            </button>
+          </Link>
         </div>
-        
-        {/* Tablas requeridas [cite: 65, 66, 68] */}
+    
         {renderTabla("Activos", 1)}
         {renderTabla("Inactivos", 2)}
         {renderTabla("En Espera", 3)}
